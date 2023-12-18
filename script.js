@@ -30,7 +30,7 @@ function Player(name) {
 }
 
 const renderGameboard = (function () {
-	const consoleRender = () => {
+	const consoleRender = (playerName, symbol) => {
 		console.log("   " + [0, 1, 2].join(" | ") + " ");
 		Gameboard.getBoard().forEach((arr, index) => {
 			console.log(
@@ -42,6 +42,7 @@ const renderGameboard = (function () {
 					"]"
 			);
 		});
+		console.log(playerName + ", where to draw " + symbol + "?");
 	};
 
 	return { consoleRender };
@@ -49,10 +50,19 @@ const renderGameboard = (function () {
 
 const GameControl = (function () {
 	let symbol = "x";
+	let playingPlayer = 1;
+	const firstPlayer = Player("Player1");
+	const secondPlayer = Player("Player2");
+	const getPlayerName = (player) => {
+		if (player === 1) {
+			return firstPlayer.getName();
+		} else if (player === 2) {
+			return secondPlayer.getName();
+		}
+	};
 
-	const firstPlayer = Player("P1");
-	const secondPlayer = Player("P2");
-	renderGameboard.consoleRender();
+	const getSymbol = () => symbol;
+	renderGameboard.consoleRender(getPlayerName(playingPlayer), symbol);
 
 	const playRound = (row, column) => {
 		Gameboard.getBoard()[row][column].setSymbol(symbol);
@@ -62,7 +72,8 @@ const GameControl = (function () {
 
 	function switchPlayer() {
 		symbol = symbol === "x" ? "o" : "x";
+		playingPlayer = playingPlayer === 1 ? 2 : 1;
 	}
 
-	return { playRound };
+	return { playRound, getSymbol };
 })();
