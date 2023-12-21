@@ -61,19 +61,27 @@ const GameControl = (function () {
 		}
 	};
 
+	const isFieldOccupied = (row, column) =>
+		Boolean(Gameboard.getBoard()[row][column].getSymbol());
+
 	const getSymbol = () => symbol;
 	renderGameboard.consoleRender(getPlayerName(playingPlayer), symbol);
 
 	const playRound = (row, column) => {
-		Gameboard.getBoard()[row][column].setSymbol(symbol);
-		renderGameboard.consoleRender();
-		switchPlayer();
+		if (!isFieldOccupied(row, column)) {
+			Gameboard.getBoard()[row][column].setSymbol(symbol);
+			switchPlayer();
+		}
+		renderGameboard.consoleRender(
+			getPlayerName(playingPlayer),
+			symbol
+		);
 	};
 
-	function switchPlayer() {
+	const switchPlayer = () => {
 		symbol = symbol === "x" ? "o" : "x";
 		playingPlayer = playingPlayer === 1 ? 2 : 1;
-	}
+	};
 
 	return { playRound, getSymbol };
 })();
