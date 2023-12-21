@@ -65,6 +65,11 @@ const GameControls = (function () {
 		}
 	};
 
+	const isGameWon = () => {
+		const playerInfo = getPlayerInfo();
+		const symbolDrawn = playerInfo.symbol;
+	};
+
 	const isFieldOccupied = (row, column) =>
 		Boolean(Gameboard.getBoard()[row][column].getSymbol());
 
