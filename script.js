@@ -11,7 +11,9 @@ const Gameboard = (function () {
 
 	const getBoard = () => board;
 
-	return { getBoard };
+	const getBoardsize = () => BOARDSIZE;
+
+	return { getBoard, getBoardsize };
 })();
 
 function Cell() {
@@ -30,7 +32,7 @@ function Player(name, symbol) {
 }
 
 const renderGameboard = (function () {
-	const consoleRender = (playerInfo) => {
+	const boardRender = () => {
 		console.log("   " + [0, 1, 2].join(" | ") + " ");
 		Gameboard.getBoard().forEach((arr, index) => {
 			console.log(
@@ -42,6 +44,9 @@ const renderGameboard = (function () {
 					"]"
 			);
 		});
+	};
+
+	const playerTurnRender = (playerInfo) => {
 		console.log(
 			playerInfo.name +
 				", where to draw " +
@@ -50,7 +55,11 @@ const renderGameboard = (function () {
 		);
 	};
 
-	return { consoleRender };
+	const winRender = (playerInfo) => {
+		console.log(playerInfo.name + " won, congratulations!");
+	};
+
+	return { boardRender, playerTurnRender, winRender };
 })();
 
 const GameControls = (function () {
@@ -66,23 +75,50 @@ const GameControls = (function () {
 	};
 
 	const isGameWon = () => {
-		const playerInfo = getPlayerInfo();
-		const symbolDrawn = playerInfo.symbol;
+		const symbolDrawn = getPlayerInfo().symbol;
+		const board = Gameboard.getBoard();
+		const checkRowColumn = (rowColumn) =>
+			rowColumn.every(
+				(symbol) => symbol.getSymbol() === symbolDrawn
+			);
+
+		for (let i = 0; i < Gameboard.getBoardsize(); i++) {
+			let column = board.map((arr) => arr[i]);
+
+			if (checkRowColumn(board[i]) || checkRowColumn(column))
+				return true;
+		}
+		if (board[1][1].getSymbol() === symbolDrawn) {
+			if (
+				(board[0][0].getSymbol() === symbolDrawn &&
+					board[2][2].getSymbol() === symbolDrawn) ||
+				(board[0][2].getSymbol() === symbolDrawn &&
+					board[2][0].getSymbol() === symbolDrawn)
+			)
+				return true;
+		}
+		return false;
 	};
 
 	const isFieldOccupied = (row, column) =>
 		Boolean(Gameboard.getBoard()[row][column].getSymbol());
 
-	renderGameboard.consoleRender(getPlayerInfo());
+	renderGameboard.boardRender();
+	renderGameboard.playerTurnRender(getPlayerInfo());
 
 	const playRound = (row, column) => {
 		if (!isFieldOccupied(row, column)) {
 			Gameboard.getBoard()[row][column].setSymbol(
 				getPlayerInfo().symbol
 			);
-			switchPlayer();
+			if (!isGameWon()) switchPlayer();
 		}
-		renderGameboard.consoleRender(getPlayerInfo());
+		renderGameboard.boardRender();
+		if (!isGameWon())
+			renderGameboard.playerTurnRender(getPlayerInfo());
+		else if (isGameWon()) {
+			renderGameboard.winRender(getPlayerInfo());
+		}
 	};
 
 	const switchPlayer = () => {
