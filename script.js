@@ -2,18 +2,22 @@ const Gameboard = (function () {
 	const BOARDSIZE = 3;
 	const board = [];
 
-	for (let i = 0; i < BOARDSIZE; i++) {
-		board[i] = [];
-		for (let j = 0; j < BOARDSIZE; j++) {
-			board[i].push(Cell());
+	const createBoard = () => {
+		for (let i = 0; i < BOARDSIZE; i++) {
+			board[i] = [];
+			for (let j = 0; j < BOARDSIZE; j++) {
+				board[i].push(Cell());
+			}
 		}
-	}
+	};
+
+	createBoard();
 
 	const getBoard = () => board;
 
 	const getBoardsize = () => BOARDSIZE;
 
-	return { getBoard, getBoardsize };
+	return { getBoard, getBoardsize, createBoard };
 })();
 
 function Cell() {
@@ -148,5 +152,13 @@ const GameControls = (function () {
 		playingPlayer = playingPlayer === 1 ? 2 : 1;
 	};
 
-	return { playRound, isATie };
+	const resetGame = () => {
+		Gameboard.createBoard();
+		gameFinished = false;
+		playingPlayer = 1;
+		renderGameboard.boardRender();
+		renderGameboard.playerTurnRender(getPlayerInfo());
+	};
+
+	return { playRound, isATie, resetGame };
 })();
