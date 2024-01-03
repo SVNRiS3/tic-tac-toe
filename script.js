@@ -59,10 +59,15 @@ const renderGameboard = (function () {
 		console.log(playerInfo.name + " won, congratulations!");
 	};
 
-	return { boardRender, playerTurnRender, winRender };
+	const tieRender = () => {
+		console.log("It's a tie!");
+	};
+
+	return { boardRender, playerTurnRender, winRender, tieRender };
 })();
 
 const GameControls = (function () {
+	let gameFinished = false;
 	let playingPlayer = 1;
 	const firstPlayer = Player("Player1", "x");
 	const secondPlayer = Player("Player2", "o");
@@ -73,6 +78,17 @@ const GameControls = (function () {
 			return secondPlayer.getInfo();
 		}
 	};
+
+	const isATie = () =>
+		Gameboard.getBoard().reduce(
+			(sum, arr) =>
+				sum +
+				arr.reduce(
+					(arrsum, item) => arrsum + item.getSymbol().length,
+					0
+				),
+			0
+		) === 9;
 
 	const isGameWon = () => {
 		const symbolDrawn = getPlayerInfo().symbol;
@@ -107,17 +123,24 @@ const GameControls = (function () {
 	renderGameboard.playerTurnRender(getPlayerInfo());
 
 	const playRound = (row, column) => {
-		if (!isFieldOccupied(row, column)) {
-			Gameboard.getBoard()[row][column].setSymbol(
-				getPlayerInfo().symbol
-			);
-			if (!isGameWon()) switchPlayer();
-		}
-		renderGameboard.boardRender();
-		if (!isGameWon())
-			renderGameboard.playerTurnRender(getPlayerInfo());
-		else if (isGameWon()) {
-			renderGameboard.winRender(getPlayerInfo());
+		if (!gameFinished) {
+			if (!isFieldOccupied(row, column)) {
+				Gameboard.getBoard()[row][column].setSymbol(
+					getPlayerInfo().symbol
+				);
+				if (!isGameWon() && !isATie()) switchPlayer();
+			}
+			renderGameboard.boardRender();
+			if (!isGameWon() && !isATie())
+				renderGameboard.playerTurnRender(getPlayerInfo());
+			else if (isGameWon() || isATie()) {
+				gameFinished = true;
+				if (isGameWon()) {
+					renderGameboard.winRender(getPlayerInfo());
+				} else if (isATie()) {
+					renderGameboard.tieRender();
+				}
+			}
 		}
 	};
 
@@ -125,5 +148,5 @@ const GameControls = (function () {
 		playingPlayer = playingPlayer === 1 ? 2 : 1;
 	};
 
-	return { playRound };
+	return { playRound, isATie };
 })();
