@@ -130,9 +130,9 @@ const GameControls = (function () {
 		if (!gameFinished) {
 			if (
 				row >= 0 &&
-				row < BOARDSIZE &&
+				row < Gameboard.getBoardsize() &&
 				column >= 0 &&
-				column < BOARDSIZE &&
+				column < Gameboard.getBoardsize() &&
 				!isFieldOccupied(row, column)
 			) {
 				Gameboard.getBoard()[row][column].setSymbol(
@@ -166,5 +166,5 @@ const GameControls = (function () {
 		renderGameboard.playerTurnRender(getPlayerInfo());
 	};
 
-	return { playRound, isATie, resetGame };
+	return { playRound, resetGame };
 })();
