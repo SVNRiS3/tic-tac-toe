@@ -35,6 +35,23 @@ function Player(name, symbol) {
 	return { getInfo };
 }
 
+const renderGameboardVisual = (function () {
+	const boardRenderVisual = () => {
+		const gameboardArr = Gameboard.getBoard();
+		const gameboardEl = document.querySelector(".gameboard");
+		gameboardEl.innerHTML = "";
+		gameboardArr.forEach((row) => {
+			row.forEach((el) => {
+				let newElement = document.createElement("div");
+				newElement.classList.add("cell");
+				newElement.textContent = el.getSymbol();
+				gameboardEl.appendChild(newElement);
+			});
+		});
+	};
+	return { boardRenderVisual };
+})();
+
 const renderGameboard = (function () {
 	const boardRender = () => {
 		console.log("   " + [0, 1, 2].join(" | ") + " ");

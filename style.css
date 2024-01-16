@@ -17,3 +17,9 @@ body {
 	font-size: 1.6rem;
 	line-height: 1.5;
 }
+
+.gameboard {
+	display: grid;
+	grid-template-columns: repeat(3, 20px);
+	grid-auto-rows: 20px;
+}
