@@ -47,6 +47,8 @@ function Player(name, symbol) {
 }
 
 const renderGameboardVisual = (function () {
+	const message = document.querySelector(".message");
+
 	const setButtonText = () => {
 		const resetButton = document.querySelector(".new-game");
 		resetButton.textContent =
@@ -72,7 +74,30 @@ const renderGameboardVisual = (function () {
 		});
 		setButtonText();
 	};
-	return { boardRenderVisual };
+
+	const playerTurnRenderVisual = (playerInfo) => {
+		message.textContent =
+			playerInfo.name +
+			", where to draw " +
+			playerInfo.symbol +
+			"?";
+	};
+
+	const winRenderVisual = (playerInfo) => {
+		message.textContent =
+			playerInfo.name + " won, congratulations!";
+	};
+
+	const tieRenderVisual = () => {
+		message.textContent = "It's a tie!";
+	};
+
+	return {
+		boardRenderVisual,
+		playerTurnRenderVisual,
+		winRenderVisual,
+		tieRenderVisual,
+	};
 })();
 
 const renderGameboard = (function () {
@@ -155,7 +180,7 @@ const GameControls = (function () {
 		Boolean(Gameboard.getBoard()[row][column].getSymbol());
 	// renderGameboard.boardRender();
 	renderGameboardVisual.boardRenderVisual();
-	renderGameboard.playerTurnRender(getPlayerInfo());
+	renderGameboardVisual.playerTurnRenderVisual(getPlayerInfo());
 
 	const playRound = (row, column) => {
 		if (!gameFinished) {
@@ -174,13 +199,17 @@ const GameControls = (function () {
 			// renderGameboard.boardRender();
 			renderGameboardVisual.boardRenderVisual();
 			if (!isGameWon() && !isATie())
-				renderGameboard.playerTurnRender(getPlayerInfo());
+				renderGameboardVisual.playerTurnRenderVisual(
+					getPlayerInfo()
+				);
 			else if (isGameWon() || isATie()) {
 				gameFinished = true;
 				if (isGameWon()) {
-					renderGameboard.winRender(getPlayerInfo());
+					renderGameboardVisual.winRenderVisual(
+						getPlayerInfo()
+					);
 				} else if (isATie()) {
-					renderGameboard.tieRender();
+					renderGameboardVisual.tieRenderVisual();
 				}
 			}
 		}
@@ -196,7 +225,7 @@ const GameControls = (function () {
 		playingPlayer = 1;
 		// renderGameboard.boardRender();
 		renderGameboardVisual.boardRenderVisual();
-		renderGameboard.playerTurnRender(getPlayerInfo());
+		renderGameboardVisual.playerTurnRenderVisual(getPlayerInfo());
 	};
 
 	const bindCells = () => {
