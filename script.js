@@ -52,7 +52,7 @@ const renderGameboardVisual = (function () {
 		resetButton.textContent =
 			Gameboard.sumOfSymbols() > 0 && !GameControls.isGameWon()
 				? "Reset"
-				: "Start new game";
+				: "New game";
 	};
 	const boardRenderVisual = () => {
 		const gameboardArr = Gameboard.getBoard();
