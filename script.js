@@ -52,7 +52,8 @@ const renderGameboardVisual = (function () {
 	const setButtonText = () => {
 		const resetButton = document.querySelector(".new-game");
 		resetButton.textContent =
-			Gameboard.sumOfSymbols() > 0 && !GameControls.isGameWon()
+			Gameboard.sumOfSymbols() > 0 &&
+			!GameControls.isGameFinished()
 				? "Reset"
 				: "New game";
 	};
@@ -219,6 +220,8 @@ const GameControls = (function () {
 		playingPlayer = playingPlayer === 1 ? 2 : 1;
 	};
 
+	const isGameFinished = () => isGameWon() || isATie();
+
 	const resetGame = () => {
 		Gameboard.createBoard();
 		gameFinished = false;
@@ -246,5 +249,5 @@ const GameControls = (function () {
 	bindCells();
 	bindReset();
 
-	return { playRound, resetGame, isGameWon };
+	return { playRound, resetGame, isGameFinished };
 })();
