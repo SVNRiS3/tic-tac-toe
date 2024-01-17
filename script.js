@@ -53,8 +53,8 @@ const renderGameboardVisual = (function () {
 })();
 
 const renderGameboard = (function () {
-	renderGameboardVisual.boardRenderVisual();
 	const boardRender = () => {
+		renderGameboardVisual.boardRenderVisual();
 		console.log("   " + [0, 1, 2].join(" | ") + " ");
 		Gameboard.getBoard().forEach((arr, index) => {
 			console.log(
