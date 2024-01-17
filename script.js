@@ -58,10 +58,14 @@ const renderGameboardVisual = (function () {
 		const gameboardArr = Gameboard.getBoard();
 		const gameboardEl = document.querySelector(".gameboard");
 		gameboardEl.innerHTML = "";
-		gameboardArr.forEach((row) => {
-			row.forEach((el) => {
+		gameboardArr.forEach((row, rowIndex) => {
+			row.forEach((el, colIndex) => {
 				let newElement = document.createElement("div");
 				newElement.classList.add("cell");
+				newElement.setAttribute(
+					"data-position",
+					"" + rowIndex + colIndex
+				);
 				newElement.textContent = el.getSymbol();
 				gameboardEl.appendChild(newElement);
 			});
@@ -193,11 +197,21 @@ const GameControls = (function () {
 		renderGameboard.playerTurnRender(getPlayerInfo());
 	};
 
+	const bindCells = () => {
+		const gameboardEl = document.querySelector(".gameboard");
+		gameboardEl.addEventListener("click", (e) => {
+			playRound(
+				...e.target.getAttribute("data-position").split("")
+			);
+		});
+	};
+
 	const bindReset = () => {
 		const resetButton = document.querySelector(".new-game");
 		resetButton.addEventListener("click", resetGame);
 	};
 
+	bindCells();
 	bindReset();
 
 	return { playRound, resetGame, isGameWon };
