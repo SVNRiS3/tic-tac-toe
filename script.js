@@ -17,7 +17,18 @@ const Gameboard = (function () {
 
 	const getBoardsize = () => BOARDSIZE;
 
-	return { getBoard, getBoardsize, createBoard };
+	const sumOfSymbols = () =>
+		getBoard().reduce(
+			(sum, arr) =>
+				sum +
+				arr.reduce(
+					(arrsum, item) => arrsum + item.getSymbol().length,
+					0
+				),
+			0
+		);
+
+	return { getBoard, getBoardsize, createBoard, sumOfSymbols };
 })();
 
 function Cell() {
@@ -36,6 +47,13 @@ function Player(name, symbol) {
 }
 
 const renderGameboardVisual = (function () {
+	const setButtonText = () => {
+		const resetButton = document.querySelector(".new-game");
+		resetButton.textContent =
+			Gameboard.sumOfSymbols() > 0 && !GameControls.isGameWon()
+				? "Reset"
+				: "Start new game";
+	};
 	const boardRenderVisual = () => {
 		const gameboardArr = Gameboard.getBoard();
 		const gameboardEl = document.querySelector(".gameboard");
@@ -48,6 +66,7 @@ const renderGameboardVisual = (function () {
 				gameboardEl.appendChild(newElement);
 			});
 		});
+		setButtonText();
 	};
 	return { boardRenderVisual };
 })();
@@ -101,16 +120,7 @@ const GameControls = (function () {
 		}
 	};
 
-	const isATie = () =>
-		Gameboard.getBoard().reduce(
-			(sum, arr) =>
-				sum +
-				arr.reduce(
-					(arrsum, item) => arrsum + item.getSymbol().length,
-					0
-				),
-			0
-		) === 9;
+	const isATie = () => Gameboard.sumOfSymbols() === 9;
 
 	const isGameWon = () => {
 		const symbolDrawn = getPlayerInfo().symbol;
@@ -190,5 +200,5 @@ const GameControls = (function () {
 
 	bindReset();
 
-	return { playRound, resetGame };
+	return { playRound, resetGame, isGameWon };
 })();
