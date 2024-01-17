@@ -53,6 +53,7 @@ const renderGameboardVisual = (function () {
 })();
 
 const renderGameboard = (function () {
+	renderGameboardVisual.boardRenderVisual();
 	const boardRender = () => {
 		console.log("   " + [0, 1, 2].join(" | ") + " ");
 		Gameboard.getBoard().forEach((arr, index) => {
@@ -139,7 +140,6 @@ const GameControls = (function () {
 
 	const isFieldOccupied = (row, column) =>
 		Boolean(Gameboard.getBoard()[row][column].getSymbol());
-
 	renderGameboard.boardRender();
 	renderGameboard.playerTurnRender(getPlayerInfo());
 
