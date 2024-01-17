@@ -183,5 +183,12 @@ const GameControls = (function () {
 		renderGameboard.playerTurnRender(getPlayerInfo());
 	};
 
+	const bindReset = () => {
+		const resetButton = document.querySelector(".new-game");
+		resetButton.addEventListener("click", resetGame);
+	};
+
+	bindReset();
+
 	return { playRound, resetGame };
 })();
