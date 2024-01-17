@@ -77,7 +77,6 @@ const renderGameboardVisual = (function () {
 
 const renderGameboard = (function () {
 	const boardRender = () => {
-		renderGameboardVisual.boardRenderVisual();
 		console.log("   " + [0, 1, 2].join(" | ") + " ");
 		Gameboard.getBoard().forEach((arr, index) => {
 			console.log(
@@ -154,7 +153,8 @@ const GameControls = (function () {
 
 	const isFieldOccupied = (row, column) =>
 		Boolean(Gameboard.getBoard()[row][column].getSymbol());
-	renderGameboard.boardRender();
+	// renderGameboard.boardRender();
+	renderGameboardVisual.boardRenderVisual();
 	renderGameboard.playerTurnRender(getPlayerInfo());
 
 	const playRound = (row, column) => {
@@ -171,7 +171,8 @@ const GameControls = (function () {
 				);
 				if (!isGameWon() && !isATie()) switchPlayer();
 			}
-			renderGameboard.boardRender();
+			// renderGameboard.boardRender();
+			renderGameboardVisual.boardRenderVisual();
 			if (!isGameWon() && !isATie())
 				renderGameboard.playerTurnRender(getPlayerInfo());
 			else if (isGameWon() || isATie()) {
@@ -193,7 +194,8 @@ const GameControls = (function () {
 		Gameboard.createBoard();
 		gameFinished = false;
 		playingPlayer = 1;
-		renderGameboard.boardRender();
+		// renderGameboard.boardRender();
+		renderGameboardVisual.boardRenderVisual();
 		renderGameboard.playerTurnRender(getPlayerInfo());
 	};
 
