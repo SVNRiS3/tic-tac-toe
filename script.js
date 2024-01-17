@@ -202,9 +202,10 @@ const GameControls = (function () {
 	const bindCells = () => {
 		const gameboardEl = document.querySelector(".gameboard");
 		gameboardEl.addEventListener("click", (e) => {
-			playRound(
-				...e.target.getAttribute("data-position").split("")
-			);
+			if (e.target.classList.contains("cell"))
+				playRound(
+					...e.target.getAttribute("data-position").split("")
+				);
 		});
 	};
 
