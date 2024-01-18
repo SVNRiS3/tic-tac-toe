@@ -78,15 +78,12 @@ const renderGameboardVisual = (function () {
 
 	const playerTurnRenderVisual = (playerInfo) => {
 		message.textContent =
-			playerInfo.name +
-			", where to draw " +
-			playerInfo.symbol +
-			"?";
+			"Where to draw " + playerInfo.symbol + "?";
 	};
 
 	const winRenderVisual = (playerInfo) => {
 		message.textContent =
-			playerInfo.name + " won, congratulations!";
+			playerInfo.symbol + "'s won, congratulations!";
 	};
 
 	const tieRenderVisual = () => {
@@ -117,16 +114,11 @@ const renderGameboard = (function () {
 	};
 
 	const playerTurnRender = (playerInfo) => {
-		console.log(
-			playerInfo.name +
-				", where to draw " +
-				playerInfo.symbol +
-				"?"
-		);
+		console.log("Where to draw " + playerInfo.symbol + "?");
 	};
 
 	const winRender = (playerInfo) => {
-		console.log(playerInfo.name + " won, congratulations!");
+		console.log(playerInfo.symbol + "'s won, congratulations!");
 	};
 
 	const tieRender = () => {
@@ -139,8 +131,8 @@ const renderGameboard = (function () {
 const GameControls = (function () {
 	let gameFinished = false;
 	let playingPlayer = 1;
-	const firstPlayer = Player("Player1", "x");
-	const secondPlayer = Player("Player2", "o");
+	const firstPlayer = Player("Player1", "X");
+	const secondPlayer = Player("Player2", "O");
 	const getPlayerInfo = () => {
 		if (playingPlayer === 1) {
 			return firstPlayer.getInfo();
